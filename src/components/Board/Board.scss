@@ -1,0 +1,58 @@
+.board {
+  width: 100%;
+}
+
+.board-row {
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.place {
+  flex: 1 0 auto;
+  background: tomato;
+  border-radius: 5px;
+  margin: 5px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 500%;
+  width: 30%;
+  overflow: hidden;
+  cursor: default;
+  user-select: none;
+  transition: background 0.5s ease;
+}
+
+.place:before {
+    content:'';
+    float:left;
+    padding-top:100%;
+}
+
+.place:hover span {
+  transform: scale(1.5);
+  transition: transform 0.3s ease;
+}
+
+.a-place {
+  background: #BDBDBD;
+  cursor: pointer;
+}
+
+.a-place:hover {
+  background: #E57373;
+}
+
+.a-place:hover::after {
+  content: 'X'
+}
+
+.x-place {
+  background: #EF5350;
+}
+
+.o-place {
+  background: #5C6BC0;
+}

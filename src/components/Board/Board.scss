@@ -41,12 +41,20 @@
   cursor: pointer;
 }
 
-.a-place:hover {
+.x-next:hover {
   background: #E57373;
 }
 
-.a-place:hover::after {
+.x-next:hover::after {
   content: 'X'
+}
+
+.o-next:hover {
+  background: #7986CB;
+}
+
+.o-next:hover::after {
+  content: 'O'
 }
 
 .x-place {

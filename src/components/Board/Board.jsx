@@ -2,6 +2,8 @@ import React from 'react'
 import styles from './Board.scss'
 import PlaceEnum from '../../PlaceEnum'
 import _ from 'lodash'
+import cx from 'classnames'
+import MarkTypeEnum from '../../MarkTypeEnum';
 //this.props.marks = [{markType: X, place: 'TOP_LEFT'}]
 export default class Board extends React.Component {
     constructor(props) {
@@ -10,8 +12,14 @@ export default class Board extends React.Component {
 
     getPlace = (place, index) => {
         const markType = this.getMarkType(place)
+        const nextMark = this.props.nextMark
+
         return <div key={index}
-            className={`place ${markType ? markType.toLowerCase() : 'a'}-place`}
+            className={
+                cx(`place ${markType ? markType.toLowerCase() : 'a'}-place`,
+                {['x-next']: !markType && nextMark == MarkTypeEnum.X},
+                {['o-next']: !markType && nextMark == MarkTypeEnum.O})
+            }
             onClick={(e) => !markType && this.props.addMark(place)}>
             {
                 markType && (

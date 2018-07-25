@@ -1,4 +1,4 @@
-import PlaceEnum from "../PlaceEnum";
+import PlaceEnum from "../../PlaceEnum";
 
 export default class Bot {
     static getAvailablePlaces(marks) {

@@ -3,14 +3,24 @@ import Board from '../Board'
 import styles from './Game.scss'
 import MarkTypeEnum from '../../MarkTypeEnum'
 import _ from 'lodash'
-import WINNING_COMBINATIONS from '../../WinningCombinations';
+import WINNING_COMBINATIONS from '../../WinningCombinations'
+import Player from '../Player'
+import FirstOptionBot from '../../handlers/bots/FirstOptionBot';
 
 export default class Game extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            marks: []
+            marks: [],
+            players: {
+                x: {
+                    handler: FirstOptionBot
+                },
+                o: {
+                    handler: FirstOptionBot
+                }
+            }
         }
     }
 
@@ -35,23 +45,44 @@ export default class Game extends React.Component {
     getNextMarkType = () => this.getLastMarkType() == MarkTypeEnum.X ? MarkTypeEnum.O : MarkTypeEnum.X
 
     addMark = (place) => {
+        debugger
         const markType = this.getNextMarkType()
         this.setState({
             marks: [...this.state.marks, { markType: markType, place }]
         }, () => {
             const winningCombination = this.getPlayerWinningCombination(markType)
             if (winningCombination) {
-                this.setState({
-                    marks: []
-                })
+                setTimeout(() => {
+                    this.setState({
+                        marks: []
+                    }, () => {
+                        this.xrs()
+                    })
+                }, 1000)
+                
+            } else {
+                this.xrs()
             }
         })
     }
+
+    xrs = () => {
+        setTimeout(() => {
+            const place = this.state.players.x.handler.play(this.state.marks)
+            this.addMark(place)
+        }, 500)
+    }
+
+    // componentDidMount() {
+    //     const place = this.state.players.x.handler.play(this.state.marks)
+    //     this.addMark(place)
+    // }
 
     render() {
         return (
             <div className='game-container'>
                 <div className='player-container'>
+                    <Player />
                 </div>
                 <div className='board-container'>
                     <Board
@@ -61,6 +92,7 @@ export default class Game extends React.Component {
                     />
                 </div>
                 <div className='player-container'>
+                    <Player />
                 </div>
             </div>
         )

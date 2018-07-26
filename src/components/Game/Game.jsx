@@ -6,6 +6,7 @@ import _ from 'lodash'
 import WINNING_COMBINATIONS from '../../WinningCombinations'
 import Player from '../Player'
 import FirstOptionBot from '../../handlers/bots/FirstOptionBot';
+import RandomBot from '../../handlers/bots/RandomBot';
 
 export default class Game extends React.Component {
     constructor(props) {
@@ -15,12 +16,13 @@ export default class Game extends React.Component {
             marks: [],
             players: {
                 x: {
-                    handler: FirstOptionBot
+                    handler: RandomBot
                 },
                 o: {
                     handler: FirstOptionBot
                 }
-            }
+            },
+            winningCombination: null
         }
     }
 
@@ -52,31 +54,41 @@ export default class Game extends React.Component {
         }, () => {
             const winningCombination = this.getPlayerWinningCombination(markType)
             if (winningCombination) {
-                setTimeout(() => {
-                    this.setState({
-                        marks: []
-                    }, () => {
-                        this.xrs()
-                    })
-                }, 1000)
-                
+                this.setState({
+                    winningCombination: winningCombination
+                }, () => {
+                    // setTimeout(() => {
+                    //     this.setState({
+                    //         winningCombination: null
+                    //     }, () => {
+                    //         this.resetMarksAndContinue()
+                    //     })
+                    // }, 1000)
+                })
+            } else if (this.state.marks.length === 9) {
+                this.resetMarksAndContinue()
             } else {
-                this.xrs()
+                this.callNextPlay()
             }
         })
     }
 
-    xrs = () => {
+    callNextPlay = () => {
         setTimeout(() => {
             const place = this.state.players.x.handler.play(this.state.marks)
             this.addMark(place)
         }, 500)
     }
 
-    // componentDidMount() {
-    //     const place = this.state.players.x.handler.play(this.state.marks)
-    //     this.addMark(place)
-    // }
+    resetMarksAndContinue = () => {
+        setTimeout(() => {
+            this.setState({
+                marks: []
+            }, () => {
+                this.callNextPlay()
+            })
+        }, 1000)
+    }
 
     render() {
         return (
@@ -89,6 +101,7 @@ export default class Game extends React.Component {
                         marks={this.state.marks}
                         addMark={this.addMark}
                         nextMark={this.getNextMarkType()}
+                        winningCombination={this.state.winningCombination}
                     />
                 </div>
                 <div className='player-container'>

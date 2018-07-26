@@ -41,16 +41,8 @@ export default class Board extends React.Component {
     )
 
     render() {
-        const places = Object.values(PlaceEnum)
-
-        return (
-            <div className='board'>
-                {places.map(this.getPlace)}
-            </div>
-        )
-        //return places.map(this.getPlace)
-        // const placesVerticalGrouped = _.groupBy(Object.values(PlaceEnum), a => a.split('_')[0])
-        // return Object.values(placesVerticalGrouped)
-        //     .map(this.getPlaces)
+        const placesVerticalGrouped = _.groupBy(Object.values(PlaceEnum), a => a.split('_')[0])
+        return Object.values(placesVerticalGrouped)
+            .map(this.getPlaces)
     }
 }

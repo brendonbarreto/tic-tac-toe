@@ -6,7 +6,6 @@ import _ from 'lodash'
 import WINNING_COMBINATIONS from '../../WinningCombinations'
 import Player from '../Player'
 import FirstOptionBot from '../../handlers/bots/FirstOptionBot';
-import Bot from '../../handlers/bots/Bot';
 
 export default class Game extends React.Component {
     constructor(props) {
@@ -68,8 +67,6 @@ export default class Game extends React.Component {
     }
 
     xrs = () => {
-        const isBot = Bot.isPrototypeOf(this.state.players.x.handler)
-        
         setTimeout(() => {
             const place = this.state.players.x.handler.play(this.state.marks)
             this.addMark(place)

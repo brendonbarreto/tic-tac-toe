@@ -16,14 +16,14 @@ export default class Board extends React.Component {
 
     getPlace = (place, index) => {
         const markType = this.getMarkType(place)
-        const nextMark = this.props.nextMark
+        const currentMarkType = this.props.currentMarkType
         const isWinningPlace = this.isWinningPlace(place)
 
         return <div key={index}
             className={
-                cx(`place ${markType ? markType.toLowerCase() : (isWinningPlace ? 'w' : 'a')}-place`,
-                {['x-next']: !markType && !isWinningPlace && nextMark == MarkTypeEnum.X},
-                {['o-next']: !markType && !isWinningPlace && nextMark == MarkTypeEnum.O})
+                cx(`place ${isWinningPlace ? 'w' : (markType ? markType.toLowerCase() : 'a')}-place`,
+                {['x-next']: !markType && !isWinningPlace && currentMarkType == MarkTypeEnum.X},
+                {['o-next']: !markType && !isWinningPlace && currentMarkType == MarkTypeEnum.O})
             }
             onClick={(e) => !markType && this.props.addMark(place)}>
             {

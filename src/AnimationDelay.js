@@ -14,5 +14,13 @@ export default Object.freeze({
     ultraFast: {
         botMark: 100,
         endGame: 300
+    },
+    ridiculouslyFast: {
+        botMark: 50,
+        endGame: 150
+    },
+    soFastThatICantEvenSeeIt: {
+        botMark: 5,
+        endGame: 15
     }
 })

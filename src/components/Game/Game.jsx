@@ -7,6 +7,8 @@ import WINNING_COMBINATIONS from '../../WinningCombinations'
 import Player from '../Player'
 import FirstOptionBot from '../../handlers/bots/FirstOptionBot';
 import RandomBot from '../../handlers/bots/RandomBot';
+import AnimationDelay from '../../AnimationDelay'
+
 
 export default class Game extends React.Component {
     constructor(props) {
@@ -22,7 +24,8 @@ export default class Game extends React.Component {
                     handler: FirstOptionBot
                 }
             },
-            winningCombination: null
+            winningCombination: null,
+            gameSpeed: AnimationDelay.soFastThatICantEvenSeeIt
         }
     }
 
@@ -44,11 +47,10 @@ export default class Game extends React.Component {
         return lastMark && lastMark.markType
     }
 
-    getNextMarkType = () => this.getLastMarkType() == MarkTypeEnum.X ? MarkTypeEnum.O : MarkTypeEnum.X
+    getCurrentMarkType = () => this.getLastMarkType() == MarkTypeEnum.X ? MarkTypeEnum.O : MarkTypeEnum.X
 
     addMark = (place) => {
-        debugger
-        const markType = this.getNextMarkType()
+        const markType = this.getCurrentMarkType()
         this.setState({
             marks: [...this.state.marks, { markType: markType, place }]
         }, () => {
@@ -57,13 +59,13 @@ export default class Game extends React.Component {
                 this.setState({
                     winningCombination: winningCombination
                 }, () => {
-                    // setTimeout(() => {
-                    //     this.setState({
-                    //         winningCombination: null
-                    //     }, () => {
-                    //         this.resetMarksAndContinue()
-                    //     })
-                    // }, 1000)
+                    setTimeout(() => {
+                        this.setState({
+                            winningCombination: null
+                        }, () => {
+                            this.resetMarksAndContinue()
+                        })
+                    }, this.state.gameSpeed.endGame)
                 })
             } else if (this.state.marks.length === 9) {
                 this.resetMarksAndContinue()
@@ -77,7 +79,7 @@ export default class Game extends React.Component {
         setTimeout(() => {
             const place = this.state.players.x.handler.play(this.state.marks)
             this.addMark(place)
-        }, 500)
+        }, this.state.gameSpeed.botMark)
     }
 
     resetMarksAndContinue = () => {
@@ -87,7 +89,7 @@ export default class Game extends React.Component {
             }, () => {
                 this.callNextPlay()
             })
-        }, 1000)
+        }, this.state.gameSpeed.endGame)
     }
 
     render() {
@@ -100,7 +102,7 @@ export default class Game extends React.Component {
                     <Board
                         marks={this.state.marks}
                         addMark={this.addMark}
-                        nextMark={this.getNextMarkType()}
+                        currentMarkType={this.getCurrentMarkType()}
                         winningCombination={this.state.winningCombination}
                     />
                 </div>
